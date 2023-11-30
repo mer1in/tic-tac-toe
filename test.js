@@ -1,4 +1,5 @@
 const log = console.log
+const prompt = require('prompt-sync')();
 
 field = [
     ["X", 0, 0],
@@ -77,3 +78,21 @@ test(isComplete, 0, [
         ["O", "O", "X"],
     ]
 ])
+
+let player = "X";
+let winner = isComplete(field);
+while(!winner){
+    show(field);
+
+    const move = prompt(`Where are you going to set ${player}`);
+    const col = move.charCodeAt(0)-'A'.charCodeAt(0);
+    const row = move[1]*1;
+    console.log(`col ${col} row ${row}`);
+    field[row][col] = player;
+
+    player = player=="X" ? "O" : "X";
+    winner = isComplete(field);
+
+}
+log(`Congrats to ${winner}! Game is over`)
+show(field);

@@ -1,0 +1,26 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "The game",
+  "main": "index.js",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mer1in/tic-tac-toe.git"
+  },
+  "keywords": [
+    "fun"
+  ],
+  "author": "Roman Gorelik",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/mer1in/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/mer1in/tic-tac-toe#readme"
+}
