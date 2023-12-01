@@ -78,6 +78,13 @@ test(isComplete, 0, [
         ["O", "O", "X"],
     ]
 ])
+test(isComplete, "draw", [
+    [
+        ["O", "X", "X"],
+        ["X", "O", "O"],
+        ["X", "O", "X"],
+    ]
+])
 
 let player = "X";
 let winner = isComplete(field);
