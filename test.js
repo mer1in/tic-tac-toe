@@ -1,39 +1,6 @@
 const log = console.log
-const prompt = require('prompt-sync')();
+import { Game3x3 } from './game3x3.js';
 
-field = [
-    ["X", 0, 0],
-    [0, 0, "O"],
-    [0, 0, 0],
-]
-
-function show(f){
-    log('   A B C ');
-    for (let i = 0; i<3; i++)
-    {
-        log(`  -------`)
-        let str = ` ${i}|`
-        for (let j = 0; j<3; j++)
-            str += `${f[i][j] ? f[i][j] : " "}|`
-        log(str)
-    }
-}
-function isComplete(f){
-    for (let i = 0; i<f.length; i++)
-    {
-        if (f[i][0] == f[i][1] && f[i][1] == f[i][2] && !!f[i][0])
-            return f[i][0];
-        if (f[0][i] == f[1][i] && f[1][i] == f[2][i] && !!f[0][i])
-            return f[0][i];
-    }
-    if (f[0][0] == f[1][1] && f[1][1] == f[2][2] && !!f[1][1])
-        return(f[1][1])
-    if (f[2][0] == f[1][1] && f[1][1] == f[0][2] && !!f[1][1])
-        return(f[1][1])
-    return 0;
-}
-
-show(field)
 const test = (func, expect, args) => {
     const res = func(...args);
     if (expect == res)
@@ -43,63 +10,69 @@ const test = (func, expect, args) => {
     }
     log("Fail! input:", args, `expected: "${expect}" but got "${res}"`)
 }
-test(isComplete, "X", [
-    [
-        ["X", 0, 0],
-        ["X", 0, 0],
-        ["X", 0, 0],
-    ]
-])
-test(isComplete, "X", [
-    [
-        ["X", 0,  0 ],
-        [ 0, "X", 0 ],
-        ["X", 0, "X"],
-    ]
-])
-test(isComplete, "O", [
-    [
-        ["O", "O", "O"],
-        ["X",  0,   0 ],
-        ["X",  0,   0 ],
-    ]
-])
-test(isComplete, "O", [
-    [
-        ["O",  0,   0 ],
-        ["X", "O",  0 ],
-        ["O", "O", "O"],
-    ]
-])
-test(isComplete, 0, [
-    [
-        ["O",  0,   0 ],
-        ["X", "O",  0 ],
-        ["O", "O", "X"],
-    ]
-])
-test(isComplete, "draw", [
-    [
-        ["O", "X", "X"],
-        ["X", "O", "O"],
-        ["X", "O", "X"],
-    ]
-])
 
-let player = "X";
-let winner = isComplete(field);
-while(!winner){
-    show(field);
-
-    const move = prompt(`Where are you going to set ${player}`);
-    const col = move.charCodeAt(0)-'A'.charCodeAt(0);
-    const row = move[1]*1;
-    console.log(`col ${col} row ${row}`);
-    field[row][col] = player;
-
-    player = player=="X" ? "O" : "X";
-    winner = isComplete(field);
-
+const testGameStatus = (field, expect) => {
+    return test(a => {
+            const g = Game3x3(a);
+            return g.status()
+        }, expect, [field]
+    )
 }
-log(`Congrats to ${winner}! Game is over`)
-show(field);
+
+[
+
+    {
+        field: [
+            ["X", 0, 0],
+            ["X", 0, 0],
+            ["X", 0, 0],
+        ],
+        expect: "X"
+    },
+
+    {
+        field: [
+            ["X", 0,  0 ],
+            [ 0, "X", 0 ],
+            ["X", 0, "X"],
+        ],
+        expect: "X"
+    },
+
+    {
+        field: [
+            ["O", "O", "O"],
+            ["X",  0,   0 ],
+            ["X",  0,   0 ],
+        ],
+        expect: "O"
+    },
+
+    {
+        field: [
+            ["O",  0,   0 ],
+            ["X", "O",  0 ],
+            ["O", "O", "O"],
+        ],
+        expect: "O"
+    },
+
+    {
+        field: [
+            ["O",  0,   0 ],
+            ["X", "O",  0 ],
+            ["O", "O", "X"],
+        ],
+        expect: 0
+    },
+
+    {
+        field: [
+            ["O", "X", "X"],
+            ["X", "O", "O"],
+            ["X", "O", "X"],
+        ],
+        expect: "draw"
+    },
+
+].forEach(t => testGameStatus(t.field, t.expect))
